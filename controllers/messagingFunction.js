@@ -90,8 +90,7 @@ exports.districtIdHandler = async(number, message) => {
     try {
         await sendTextMessage(number, languageChooser(number).learnFromVideo)
         await sendVideoFile(number, videos[1])
-        await sendTextMessage(number, languageChooser(number).startTheQuiz)
-
+        await sendTemplateMessage(number, languageChooser(number).startTemplate)
         flowPathIndicator.set(number, "5")
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
