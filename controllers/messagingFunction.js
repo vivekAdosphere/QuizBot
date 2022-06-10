@@ -1,10 +1,11 @@
 const { MapToLocal } = require("../functionality/mapToLocal");
 const mapNames = require("../config/mapNames");
 const languageChooser = require("../language/languageChooser");
-const { sendTextMessage, sendVideoFile, sendImageFile } = require("../functionality/messageSender")
+const { sendTextMessage, sendVideoFile, sendImageFile, sendTemplateMessage } = require("../functionality/messageSender")
 const logger = require("../functionality/logger")
-const { clearFlags, getCurrentTime, isValidDate } = require("../functionality/utilities")
-const config = require("../config/config")
+const { clearFlags } = require("../functionality/utilities")
+const config = require("../config/config");
+const { videos, images } = require("../config/config");
 const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
 const userData = new MapToLocal(mapNames.userData)
 
@@ -26,40 +27,31 @@ let initDefaultValues = (number, index) => {
 
 //this process starts when used initialize the conversation with messages like hi,hello or similar
 //if user sends hi then below function is called
-
-
 exports.introductionHandler = async(number) => {
     try {
         clearFlags(number)
+        await sendTextMessage(number, languageChooser(number).welcomeMessage)
+        await sendTextMessage(number, languageChooser(number).existingUserInformation)
         await sendTextMessage(number, languageChooser(number).askForExistingUser)
         initDefaultValues(number, "1");
-        console.log(flowPathIndicator.get(number))
-
-
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
         clearFlags(number)
     }
 }
 
-//flowpath is set to 1 
-//this method checks the users reply and set the path of flowpathindicator
-
-
+// 1
+// This method checks the users reply and set the path of flowpathindicator
 exports.existingUserHandler = async(number, message) => {
     try {
-
         if (languageChooser(number).No.includes(message)) {
             await sendTextMessage(number, languageChooser(number).askForName)
             flowPathIndicator.set(number, "2")
         } else if (languageChooser(number).Yes.includes(message)) {
             await sendTextMessage(number, languageChooser(number).learnFromVideo)
-            await sendVideoFile(number)
-            await sendImageFile(number)
-            await sendTextMessage(number, languageChooser(number).startTheQuiz)
-
+            await sendVideoFile(number, videos[1])
+            await sendTemplateMessage(number, languageChooser(number).startTemplate)
             flowPathIndicator.set(number, "5")
-
         } else {
             await sendTextMessage(languageChooser(number).invalidInput);
         }
@@ -71,8 +63,8 @@ exports.existingUserHandler = async(number, message) => {
     }
 }
 
+// 2
 //flowpath is set to 2 then we have to handle the name of a user
-
 exports.nameHandler = async(number, message) => {
     try {
         await sendTextMessage(number, languageChooser(number).askForDesignation);
@@ -84,6 +76,7 @@ exports.nameHandler = async(number, message) => {
     }
 }
 
+// 3
 exports.designationHandler = async(number, message) => {
     try {
         await sendTextMessage(number, languageChooser(number).askForDistrictId);
@@ -94,11 +87,12 @@ exports.designationHandler = async(number, message) => {
     }
 }
 
+// 4
 exports.districtIdHandler = async(number, message) => {
     try {
         console.log("bjkabk")
         await sendTextMessage(number, languageChooser(number).learnFromVideo)
-        await sendVideoFile(number)
+        await sendVideoFile(number, videos[1])
         await sendTextMessage(number, languageChooser(number).startTheQuiz)
 
         flowPathIndicator.set(number, "5")
@@ -109,19 +103,18 @@ exports.districtIdHandler = async(number, message) => {
 }
 let count = 0;
 
-exports.quizHandler = async(number, message) => {
+// 5
+exports.quizHandler = async(number) => {
     try {
-        if (message === "1") {
-            await sendTextMessage(number, languageChooser(number).question1);
-            flowPathIndicator.set(number, "6")
-        }
-
+        await sendTextMessage(number, languageChooser(number).question1);
+        flowPathIndicator.set(number, "6")
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
         clearFlags(number)
     }
 }
 
+// 6
 exports.question1Handler = async(number, message) => {
     try {
         if (message === "1") {
@@ -141,6 +134,7 @@ exports.question1Handler = async(number, message) => {
 
 }
 
+// 7
 exports.question2Handler = async(number, message) => {
     try {
         if (message === "1") {
@@ -153,7 +147,6 @@ exports.question2Handler = async(number, message) => {
 
         } else {
             await sendTextMessage(number, languageChooser(number).invalidInput)
-
         }
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
@@ -161,6 +154,7 @@ exports.question2Handler = async(number, message) => {
     }
 }
 
+// 8
 exports.question3Handler = async(number, message) => {
     try {
         if (message === "1") {
@@ -172,7 +166,6 @@ exports.question3Handler = async(number, message) => {
             flowPathIndicator.set(number, "9")
         } else {
             await sendTextMessage(number, languageChooser(number).invalidInput)
-
         }
 
     } catch (err) {
@@ -182,6 +175,7 @@ exports.question3Handler = async(number, message) => {
 
 }
 
+// 9
 exports.question4Handler = async(number, message) => {
     try {
         if (message === "1") {
@@ -201,18 +195,22 @@ exports.question4Handler = async(number, message) => {
     }
 }
 
+// 10
 exports.question5Handler = async(number, message) => {
     try {
         if (message === "1") {
             await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}`)
+            await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
-
+            clearFlags(number)
         } else if (message === "2") {
             count++;
             await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}`)
-            await sendImageFile(number)
+            await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
-
+            clearFlags(number)
+        } else {
+            await sendTextMessage(number, languageChooser(number).invalidInput)
         }
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);

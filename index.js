@@ -1,7 +1,8 @@
 const express = require('express')
 const helmet = require('helmet')
 const config = require("./config/config")
-const { handleTextMessage } = require('./controllers/messageHandler');
+const { handleTextMessage, handleButtonMessage } = require('./controllers/messageHandler');
+const { webhookValidator } = require('./functionality/messageSender');
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 app.get("/verify/:password", (req, res) => {
     try {
         if (req.params.password === config.VERIFY_TOKEN) {
+            webhookValidator().catch(err => console.log(err))
             res.status(200).json({
                 "message": "Webhook, verified"
             })
@@ -42,7 +44,6 @@ app.get("/verify/:password", (req, res) => {
 
 app.post("/webhook", (req, res) => {
     if (req.body.messages) {
-        // console.log(req.body.messages)
         const messages = req.body.messages
         messages.forEach(async(value) => {
             const waId = value.from;
@@ -51,17 +52,16 @@ app.post("/webhook", (req, res) => {
                 console.log(value.text.body)
                 handleTextMessage(waId, value.text.body)
                 res.status(200).end();
-
+            } else if (value.type === "button") {
+                handleButtonMessage(waId, value.button.text)
+                res.status(200).end();
             } else {
-                res.status(200).json({
-                    "message": "Failed"
-                })
+                res.status(200).end();
             }
         })
 
     } else {
         res.status(200).end();
-
     }
 })
 

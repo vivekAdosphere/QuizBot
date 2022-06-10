@@ -15,9 +15,10 @@ const headers = {
 
 const serverUrl = config.SERVER_URL
 const baseApiUrl = config.API_BASE_URL
+const namespaceId = config.NAMESPACE_ID
 
 
-//send text message to whatsapp number
+// send text message to whatsapp number
 exports.sendTextMessage = async(number, message) => {
     try {
         const payload = {
@@ -30,42 +31,6 @@ exports.sendTextMessage = async(number, message) => {
 
         const res = await axios.post(baseApiUrl + "/messages", payload, { headers })
         return res.data
-        console.log(res.data)
-
-    } catch (err) {
-        logger.error(`Error,${JSON.stringify(err.response.data)}`);
-        console.log(err)
-        return err.response.data
-    }
-}
-
-
-
-//send QuickReplies
-
-exports.sendQuickReply = async(number, message) => {
-    try {
-        const payload = {
-            "recipient_type": "individual",
-            "to": number,
-            "messaging_type": "RESPONSE",
-            "message": {
-                "text": message,
-                "quick_replies": [{
-                    "content_type": "text",
-                    "title": "Yes",
-                    "payload": "yes",
-                    "image_url": "http://example.com/img/green.png"
-                }, {
-                    "content_type": "text",
-                    "title": "No",
-                    "payload": "no",
-                    "image_url": "http://example.com/img/red.png"
-                }]
-            }
-        }
-        const res = await axios.post(baseApiUrl + "/messages", payload, { headers })
-        return res.data
 
     } catch (err) {
         logger.error(`Error,${JSON.stringify(err.response.data)}`);
@@ -74,15 +39,14 @@ exports.sendQuickReply = async(number, message) => {
 }
 
 //send video message
-
-exports.sendVideoFile = async(number) => {
+exports.sendVideoFile = async(number, videoId) => {
     try {
         const payload = {
             "recipient_type": "individual",
             "to": number,
             "type": "video",
             "video": {
-                "id": "59d738c7-c6b8-420d-aa42-cdfe679d19f2"
+                "id": videoId
             }
         }
         const res = await axios.post(baseApiUrl + "/messages", payload, { headers });
@@ -95,28 +59,23 @@ exports.sendVideoFile = async(number) => {
 }
 
 //send image file to number
-exports.sendImageFile = async(number) => {
+exports.sendImageFile = async(number, imageId) => {
     try {
-        console.log("bshdb")
         const payload = {
             "recipient_type": "individual",
             "to": number,
             "type": "image",
             "image": {
-                "id": "b9a26d1f-7771-4a59-93a0-ab8ec99681cc"
+                "id": imageId
             }
         }
         const res = await axios.post(baseApiUrl + "/messages", payload, { headers });
-        console.log(res)
         return res.data
-
-
     } catch (err) {
         logger.error(`Error,${JSON.stringify(err.response.data)}`);
         return err.response.data
     }
 }
-
 
 //send document file
 exports.sendDocumentFile = async(number, certificateId, filename) => {
@@ -194,7 +153,7 @@ exports.sendListMessage = async(number, message) => {
 }
 
 //to send template message to number
-exports.sendTempelateMessage = async(number, message) => {
+exports.sendTemplateMessage = async(number, template) => {
     try {
         const payload = {
             "recipient_type": "individual",

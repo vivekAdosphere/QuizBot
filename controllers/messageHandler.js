@@ -1,7 +1,7 @@
 const languageChooser = require("../language/languageChooser")
 const { MapToLocal } = require("../functionality/mapToLocal");
 const mapNames = require("../config/mapNames")
-const { sendTextMessage, sendListMessage, sendVideoFile } = require("../functionality/messageSender")
+const { sendTextMessage, sendListMessage, sendVideoFile, sendTemplateMessage } = require("../functionality/messageSender")
 const config = require("../config/config")
 const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator)
 
@@ -15,7 +15,6 @@ const { clearFlags } = require("../functionality/utilities");
 
 exports.handleTextMessage = async(number, message) => {
     try {
-
         if (languageChooser(number).initiateConversationMessages.includes(message)) {
             introductionHandler(number)
         } else if (flowPathIndicator.has(number)) {
@@ -33,7 +32,7 @@ exports.handleTextMessage = async(number, message) => {
                     districtIdHandler(number, message)
                     break
                 case "5":
-                    quizHandler(number, message)
+                    await sendTemplateMessage(number, languageChooser(number).startTemplate)
                     break
                 case "6":
                     question1Handler(number, message)
@@ -61,6 +60,24 @@ exports.handleTextMessage = async(number, message) => {
 
     } catch (err) {
         logger.error(`Error,${languageChooser(number).somethingWentWrong}`)
+        clearFlags(number)
+    }
+}
+
+exports.handleButtonMessage = async(number, buttonText) => {
+    try {
+        if (flowPathIndicator.has(number)) {
+            if (flowPathIndicator.get(number) === "5") {
+                switch (buttonText) {
+                    case "Start":
+                        quizHandler(number)
+                        break
+                }
+            }
+        }
+    } catch (err) {
+        console.log(err.stack)
+        logger.error(`Error --> ${languageChooser(number).somethingWentWrong}`)
         clearFlags(number)
     }
 }
