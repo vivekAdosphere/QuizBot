@@ -43,34 +43,82 @@ exports.sendTextMessage = async(number, message) => {
 
 //send QuickReplies
 
-exports.sendQuickReply = async() => {
-        try {
-            const payload = {
-                "recipient_type": "individual",
-                "to": number,
-                "messaging_type": "RESPONSE",
-                "message": {
-                    "text": languageChooser(number).askForExistingUser,
-                    "quick_replies": [{
-                        "content_type": "text",
-                        "title": "Yes",
-                        "payload": "yes",
-                        "image_url": "http://example.com/img/green.png"
-                    }, {
-                        "content_type": "text",
-                        "title": "No",
-                        "payload": "no",
-                        "image_url": "http://example.com/img/red.png"
-                    }]
-                }
+exports.sendQuickReply = async(number, message) => {
+    try {
+        const payload = {
+            "recipient_type": "individual",
+            "to": number,
+            "messaging_type": "RESPONSE",
+            "message": {
+                "text": message,
+                "quick_replies": [{
+                    "content_type": "text",
+                    "title": "Yes",
+                    "payload": "yes",
+                    "image_url": "http://example.com/img/green.png"
+                }, {
+                    "content_type": "text",
+                    "title": "No",
+                    "payload": "no",
+                    "image_url": "http://example.com/img/red.png"
+                }]
             }
-
-        } catch (err) {
-            logger.error(`Error,${JSON.stringify(err.response.data)}`);
-            return err.response.data
         }
+        const res = await axios.post(baseApiUrl + "/messages", payload, { headers })
+        return res.data
+
+    } catch (err) {
+        logger.error(`Error,${JSON.stringify(err.response.data)}`);
+        return err.response.data
     }
-    //send document file
+}
+
+//send video message
+
+exports.sendVideoFile = async(number) => {
+    try {
+        const payload = {
+            "recipient_type": "individual",
+            "to": number,
+            "type": "video",
+            "video": {
+                "id": "59d738c7-c6b8-420d-aa42-cdfe679d19f2"
+            }
+        }
+        const res = await axios.post(baseApiUrl + "/messages", payload, { headers });
+        return res.data
+
+    } catch (err) {
+        logger.error(`Error,${JSON.stringify(err.response.data)}`);
+        return err.response.data
+    }
+}
+
+//send image file to number
+exports.sendImageFile = async(number) => {
+    try {
+        console.log("bshdb")
+        const payload = {
+            "recipient_type": "individual",
+            "to": number,
+            "type": "image",
+            "image": {
+                "id": "b9a26d1f-7771-4a59-93a0-ab8ec99681cc"
+            }
+        }
+        const res = await axios.post(baseApiUrl + "/messages", payload, { headers });
+        console.log(res)
+        return res.data
+
+
+    } catch (err) {
+        logger.error(`Error,${JSON.stringify(err.response.data)}`);
+        return err.response.data
+    }
+}
+
+
+//send document file
 exports.sendDocumentFile = async(number, certificateId, filename) => {
     try {
         const payload = {
@@ -171,37 +219,6 @@ exports.sendTempelateMessage = async(number, message) => {
 }
 
 
-//send image file to number
-exports.sendImageFile = async(userName, number, imageLink, imageType = "question") => {
-    try {
-        const payload = {
-            "recipient_type": "individual",
-            "to": number,
-            "type": "image",
-            "image": {
-                "link": imageLink
-            }
-        }
-
-        let res = await axios.post(baseApiUrl + "/messages", payload, { headers })
-
-        if (imageType !== "question") {
-            setTimeout(() => {
-                fs.unlink(path.join(__dirname, "../", "public", "file", userName.replace(/\s+/g, '-') + "-" + number + ".jpg"), async function(err) {
-                    if (err) {
-                        logger.error(`Error, Unable to delete image file. -> ${err}`);
-                    } else {
-                        logger.info(`Success, Image file deleted successfully.`);
-                    }
-                })
-            }, 4000)
-        }
-
-    } catch (err) {
-        logger.error(`Error,${JSON.stringify(err.response.data)}`);
-        return err.response.data
-    }
-}
 
 
 exports.webhookValidator = async() => {

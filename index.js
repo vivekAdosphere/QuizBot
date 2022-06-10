@@ -48,12 +48,10 @@ app.post("/webhook", (req, res) => {
             const waId = value.from;
 
             if (value.type === "text") {
+                console.log(value.text.body)
                 handleTextMessage(waId, value.text.body)
                 res.status(200).end();
 
-            } else if (value.type === "interactive") {
-                handleTextMessage(waId, value.interactive.list_reply.id)
-                res.status(200).end();
             } else {
                 res.status(200).json({
                     "message": "Failed"
