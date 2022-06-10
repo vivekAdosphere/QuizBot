@@ -7,10 +7,10 @@ const selectedCommunicationLanguage = new MapToLocal(mapNames.selectedCommunicat
 
 module.exports = (senderId) => {
     if (selectedCommunicationLanguage.has(senderId) && selectedCommunicationLanguage.get(senderId) === "1") {
-        return english
+        return english;
     } else if (selectedCommunicationLanguage.has(senderId) && selectedCommunicationLanguage.get(senderId) === "2") {
-        return hindi
+        return hindi;
     } else {
-        return english
+        return english;
     }
 }

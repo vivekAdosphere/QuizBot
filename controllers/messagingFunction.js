@@ -1,14 +1,13 @@
-const { MapToLocal } = require("../functionality/mapToLocal");
 const mapNames = require("../config/mapNames");
-const languageChooser = require("../language/languageChooser");
-const { sendTextMessage, sendVideoFile, sendImageFile, sendTemplateMessage } = require("../functionality/messageSender")
-const logger = require("../functionality/logger")
-const { clearFlags } = require("../functionality/utilities")
-const config = require("../config/config");
+const logger = require("../functionality/logger");
 const { videos, images } = require("../config/config");
-const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
-const userData = new MapToLocal(mapNames.userData)
+const { clearFlags } = require("../functionality/utilities");
+const { MapToLocal } = require("../functionality/mapToLocal");
+const languageChooser = require("../language/languageChooser");
+const { sendTextMessage, sendVideoFile, sendImageFile, sendTemplateMessage } = require("../functionality/messageSender");
 
+const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
+const userData = new MapToLocal(mapNames.userData);
 
 //flagupdator
 let userDataFlagHandler = (number, key, value) => {
@@ -57,7 +56,6 @@ exports.existingUserHandler = async(number, message) => {
         }
 
     } catch (err) {
-        console.log(err)
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
         clearFlags(number)
     }
@@ -90,7 +88,6 @@ exports.designationHandler = async(number, message) => {
 // 4
 exports.districtIdHandler = async(number, message) => {
     try {
-        console.log("bjkabk")
         await sendTextMessage(number, languageChooser(number).learnFromVideo)
         await sendVideoFile(number, videos[1])
         await sendTextMessage(number, languageChooser(number).startTheQuiz)

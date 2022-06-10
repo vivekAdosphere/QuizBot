@@ -1,17 +1,12 @@
-const languageChooser = require("../language/languageChooser")
-const { MapToLocal } = require("../functionality/mapToLocal");
 const mapNames = require("../config/mapNames")
-const { sendTextMessage, sendListMessage, sendVideoFile, sendTemplateMessage } = require("../functionality/messageSender")
-const config = require("../config/config")
-const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator)
-
-const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler, certificateHandler } = require("../controllers/messagingFunction")
-
-
-const logger = require("../functionality/logger")
+const logger = require("../functionality/logger");
 const { clearFlags } = require("../functionality/utilities");
+const { MapToLocal } = require("../functionality/mapToLocal");
+const languageChooser = require("../language/languageChooser");
+const { sendTextMessage, sendTemplateMessage } = require("../functionality/messageSender");
+const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler } = require("../controllers/messagingFunction");
 
-
+const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
 
 exports.handleTextMessage = async(number, message) => {
     try {
@@ -49,10 +44,6 @@ exports.handleTextMessage = async(number, message) => {
                 case "10":
                     question5Handler(number, message)
                     break
-                    // case "11":
-                    //     certificateHandler(number, message)
-                    //     break
-
                 default:
                     sendTextMessage(number, languageChooser(number).somethingWentWrong)
             }
@@ -76,7 +67,6 @@ exports.handleButtonMessage = async(number, buttonText) => {
             }
         }
     } catch (err) {
-        console.log(err.stack)
         logger.error(`Error --> ${languageChooser(number).somethingWentWrong}`)
         clearFlags(number)
     }

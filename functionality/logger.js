@@ -1,5 +1,5 @@
-const { createLogger, transports, format } = require("winston")
-const package = require("../package.json")
+const { createLogger, transports, format } = require("winston");
+const package = require("../package.json");
 
 let timeZone = () => {
     return new Date().toLocaleString('en-IN', {

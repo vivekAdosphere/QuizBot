@@ -1,10 +1,10 @@
 const moment = require("moment");
+const mapNames = require("../config/mapNames");
 const { MapToLocal } = require("./mapToLocal");
-const mapNames = require("../config/mapNames")
 
+const userData = new MapToLocal(mapNames.userData);
 const selectedCommunicationLanguage = new MapToLocal(mapNames.selectedCommunicationLanguage);
-const userData = new MapToLocal(mapNames.userData)
-const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator)
+const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
 
 exports.clearFlags = (number) => {
     if (flowPathIndicator.has(number)) {

@@ -2,6 +2,7 @@ const express = require('express')
 const helmet = require('helmet')
 const config = require("./config/config")
 const { handleTextMessage, handleButtonMessage } = require('./controllers/messageHandler');
+const logger = require('./functionality/logger');
 const { webhookValidator } = require('./functionality/messageSender');
 
 const app = express()
@@ -49,7 +50,6 @@ app.post("/webhook", (req, res) => {
             const waId = value.from;
 
             if (value.type === "text") {
-                console.log(value.text.body)
                 handleTextMessage(waId, value.text.body)
                 res.status(200).end();
             } else if (value.type === "button") {
@@ -66,5 +66,5 @@ app.post("/webhook", (req, res) => {
 })
 
 app.listen(port, () => {
-    console.log(`Bot is listening at ${port}`)
+    logger.info(`Bot is listening at ${port}`)
 })

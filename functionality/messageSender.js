@@ -1,22 +1,16 @@
 const axios = require("axios");
-
-//local dependencies
-const logger = require("../functionality/logger");
 const config = require("../config/config");
-const languageChooser = require("../language/languageChooser");
+const logger = require("../functionality/logger");
 
 const apiKey = config.ACCESS_TOKEN
+const serverUrl = config.SERVER_URL
+const baseApiUrl = config.API_BASE_URL
+const namespaceId = config.NAMESPACE_ID
 
 const headers = {
     'D360-Api-Key': apiKey,
     'Content-Type': "application/json",
 }
-
-
-const serverUrl = config.SERVER_URL
-const baseApiUrl = config.API_BASE_URL
-const namespaceId = config.NAMESPACE_ID
-
 
 // send text message to whatsapp number
 exports.sendTextMessage = async(number, message) => {
@@ -176,9 +170,6 @@ exports.sendTemplateMessage = async(number, template) => {
         return err.response.data
     }
 }
-
-
-
 
 exports.webhookValidator = async() => {
     try {
