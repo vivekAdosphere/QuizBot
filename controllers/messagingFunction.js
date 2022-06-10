@@ -196,13 +196,13 @@ exports.question4Handler = async(number, message) => {
 exports.question5Handler = async(number, message) => {
     try {
         if (message === "1") {
-            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}`)
+            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}/5`)
             await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
             clearFlags(number)
         } else if (message === "2") {
             count++;
-            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}`)
+            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}/5`)
             await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
             clearFlags(number)
@@ -214,19 +214,3 @@ exports.question5Handler = async(number, message) => {
         clearFlags(number)
     }
 }
-
-// exports.certificateHandler = async(number, message) => {
-//     try {
-//         console.log("bjkdbc")
-//         if (count >= 4 && count <= 5) {
-//             clearFlags(number)
-//         } else {
-//             await sendTextMessage(number, "You score is below 4, Please try next time")
-//             clearFlags(number)
-//         }
-
-//     } catch (err) {
-//         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
-//         clearFlags(number)
-//     }
-// }
