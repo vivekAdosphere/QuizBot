@@ -4,7 +4,7 @@ module.exports = {
     initiateConversationMessages: ["hi", "Hi", "Hello", "hii", "HI", "hello", "hey", "Hey", "HEY", "HELLO"],
 
     //ValidateCustomer
-    welcomeMessage: "Hello welcome to the chatbot",
+    welcomeMessage: "For enhanced participation of electors in the electoral process and reducing the electoral malpractices, it is essential to provide learning & development training to all BLOs. This bot will help all BLOs to register for learning modules and complete required training.",
     existingUserInformation: "*Name:* John Doe\n*Designation:* Manager\n*District ID:* 00001",
     askForExistingUser: "Do you confirm the details above ?\n\n1. Yes\n2. No",
 
