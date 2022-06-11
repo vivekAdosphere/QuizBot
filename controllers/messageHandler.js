@@ -15,7 +15,7 @@ exports.handleTextMessage = async(number, message) => {
         } else if (flowPathIndicator.has(number)) {
             switch (flowPathIndicator.get(number)) {
                 case "1":
-                    existingUserHandler(number, message)
+                    await sendTemplateMessage(number, languageChooser(number).confirmTemplate)
                     break
                 case "2":
                     nameHandler(number, message)
@@ -63,6 +63,20 @@ exports.handleButtonMessage = async(number, buttonText) => {
                     case "Start":
                         quizHandler(number)
                         break
+                    default:
+                        sendTextMessage(number, languageChooser(number).somethingWentWrong)
+
+                }
+            } else if (flowPathIndicator.get(number) === "1") {
+                switch (buttonText) {
+                    case "Yes":
+                        existingUserHandler(number, buttonText)
+                        break
+                    case "No":
+                        existingUserHandler(number, buttonText)
+                        break
+                    default:
+                        sendTextMessage(number, languageChooser(number).somethingWentWrong)
                 }
             }
         }

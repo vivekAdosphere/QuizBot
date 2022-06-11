@@ -31,7 +31,7 @@ exports.introductionHandler = async(number) => {
         clearFlags(number)
         await sendTextMessage(number, languageChooser(number).welcomeMessage)
         await sendTextMessage(number, languageChooser(number).existingUserInformation)
-        await sendTextMessage(number, languageChooser(number).askForExistingUser)
+        await sendTemplateMessage(number, languageChooser(number).confirmTemplate)
         initDefaultValues(number, "1");
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
@@ -43,10 +43,10 @@ exports.introductionHandler = async(number) => {
 // This method checks the users reply and set the path of flowpathindicator
 exports.existingUserHandler = async(number, message) => {
     try {
-        if (languageChooser(number).No.includes(message)) {
+        if (message === "No") {
             await sendTextMessage(number, languageChooser(number).askForName)
             flowPathIndicator.set(number, "2")
-        } else if (languageChooser(number).Yes.includes(message)) {
+        } else if (message === "Yes") {
             await sendTextMessage(number, languageChooser(number).learnFromVideo)
             await sendVideoFile(number, videos[1])
             await sendTemplateMessage(number, languageChooser(number).startTemplate)
@@ -120,6 +120,12 @@ exports.question1Handler = async(number, message) => {
         } else if (message === "2") {
             await sendTextMessage(number, languageChooser(number).question2);
             flowPathIndicator.set(number, "7")
+        } else if (message === "3") {
+            await sendTextMessage(number, languageChooser(number).question2);
+            flowPathIndicator.set(number, "7")
+        } else if (message === "4") {
+            await sendTextMessage(number, languageChooser(number).question2);
+            flowPathIndicator.set(number, "7")
         } else {
             await sendTextMessage(number, languageChooser(number).invalidInput)
         }
@@ -178,6 +184,12 @@ exports.question4Handler = async(number, message) => {
             flowPathIndicator.set(number, "10")
             userDataFlagHandler(number, "score", userData.get(number).score + 1)
         } else if (message === "2") {
+            await sendTextMessage(number, languageChooser(number).question5)
+            flowPathIndicator.set(number, "10")
+        } else if (message === "3") {
+            await sendTextMessage(number, languageChooser(number).question5)
+            flowPathIndicator.set(number, "10")
+        } else if (message === "4") {
             await sendTextMessage(number, languageChooser(number).question5)
             flowPathIndicator.set(number, "10")
         } else {
