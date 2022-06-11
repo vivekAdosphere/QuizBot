@@ -17,7 +17,7 @@ module.exports = {
     Yes: ["Yes", "yes", "1"],
     No: ["No", "no", "2"],
     startTemplate: ["start_quiz", "en"],
-    learnFromVideo: "Please refer the video below to before attempting for the quiz",
+    learnFromVideo: "Please refer the video below before attempting for the quiz",
 
     //quiz questions
     question1: "*Question 1:* Which one of the following river flows between Vindhyan and Satpura ranges?\n\n1. Narmada\n2. Mahanadi",
