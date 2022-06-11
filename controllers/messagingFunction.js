@@ -116,7 +116,7 @@ exports.question1Handler = async(number, message) => {
         if (message === "1") {
             await sendTextMessage(number, languageChooser(number).question2);
             flowPathIndicator.set(number, "7")
-            userData.set(number, userData.get(number).score + 1)
+            userDataFlagHandler(number, "score", userData.get(number).score + 1)
         } else if (message === "2") {
             await sendTextMessage(number, languageChooser(number).question2);
             flowPathIndicator.set(number, "7")
@@ -139,7 +139,7 @@ exports.question2Handler = async(number, message) => {
         } else if (message === "2") {
             await sendTextMessage(number, languageChooser(number).question3)
             flowPathIndicator.set(number, "8")
-            userData.set(number, userData.get(number).score + 1)
+            userDataFlagHandler(number, "score", userData.get(number).score + 1)
         } else {
             await sendTextMessage(number, languageChooser(number).invalidInput)
         }
@@ -158,7 +158,7 @@ exports.question3Handler = async(number, message) => {
         } else if (message === "2") {
             await sendTextMessage(number, languageChooser(number).question4)
             flowPathIndicator.set(number, "9")
-            userData.set(number, userData.get(number).score + 1)
+            userDataFlagHandler(number, "score", userData.get(number).score + 1)
         } else {
             await sendTextMessage(number, languageChooser(number).invalidInput)
         }
@@ -176,7 +176,7 @@ exports.question4Handler = async(number, message) => {
         if (message === "1") {
             await sendTextMessage(number, languageChooser(number).question5)
             flowPathIndicator.set(number, "10")
-            userData.set(number, userData.get(number).score + 1)
+            userDataFlagHandler(number, "score", userData.get(number).score + 1)
         } else if (message === "2") {
             await sendTextMessage(number, languageChooser(number).question5)
             flowPathIndicator.set(number, "10")
@@ -193,13 +193,14 @@ exports.question4Handler = async(number, message) => {
 // 10
 exports.question5Handler = async(number, message) => {
     try {
+        console.log(userData.get(number).score)
         if (message === "1") {
-            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${count}/5`)
+            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${userData.get(number).score}/5`)
             await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
             clearFlags(number)
         } else if (message === "2") {
-            userData.set(number, userData.get(number).score + 1)
+            userDataFlagHandler(number, "score", userData.get(number).score + 1)
             await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${userData.get(number).score}/5`)
             await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
@@ -208,6 +209,7 @@ exports.question5Handler = async(number, message) => {
             await sendTextMessage(number, languageChooser(number).invalidInput)
         }
     } catch (err) {
+        console.log(err)
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
         clearFlags(number)
     }
