@@ -4,7 +4,7 @@ const { videos, images } = require("../config/config");
 const { clearFlags } = require("../functionality/utilities");
 const { MapToLocal } = require("../functionality/mapToLocal");
 const languageChooser = require("../language/languageChooser");
-const { sendTextMessage, sendVideoFile, sendImageFile, sendTemplateMessage } = require("../functionality/messageSender");
+const { sendTextMessage, sendVideoFile, sendImageFile, sendTemplateMessage, sendListMessage } = require("../functionality/messageSender");
 
 const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
 const userData = new MapToLocal(mapNames.userData);
@@ -39,7 +39,8 @@ exports.introductionHandler = async(number) => {
     }
 }
 
-// 1
+// flowpath is set to 1 now we have to ask user from existing details
+//this methods input is button so this function hanldles in button message handler
 // This method checks the users reply and set the path of flowpathindicator
 exports.existingUserHandler = async(number, message) => {
     try {
@@ -47,12 +48,35 @@ exports.existingUserHandler = async(number, message) => {
             await sendTextMessage(number, languageChooser(number).askForName)
             flowPathIndicator.set(number, "2")
         } else if (message === "Yes") {
+            await sendListMessage(number, languageChooser(number).selectMenu)
+            flowPathIndicator.set(number, "menu")
+        } else {
+            await sendTextMessage(languageChooser(number).invalidInput);
+        }
+
+    } catch (err) {
+        logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
+        clearFlags(number)
+    }
+}
+
+exports.menuHandler = async(number, message) => {
+    try {
+        if (message === "id1") {
             await sendTextMessage(number, languageChooser(number).learnFromVideo)
             await sendVideoFile(number, videos[1])
             await sendTemplateMessage(number, languageChooser(number).startTemplate)
             flowPathIndicator.set(number, "5")
-        } else {
-            await sendTextMessage(languageChooser(number).invalidInput);
+        } else if (message === "id2") {
+            await sendTextMessage(number, languageChooser(number).learnFromVideo)
+            await sendVideoFile(number, videos[2])
+            await sendTemplateMessage(number, languageChooser(number).startTemplate)
+            flowPathIndicator.set(number, "5")
+        } else if (message === "id3") {
+            await sendTextMessage(number, languageChooser(number).learnFromVideo)
+            await sendVideoFile(number, videos[3])
+            await sendTemplateMessage(number, languageChooser(number).startTemplate)
+            flowPathIndicator.set(number, "5")
         }
 
     } catch (err) {
@@ -88,10 +112,9 @@ exports.designationHandler = async(number, message) => {
 // 4
 exports.districtIdHandler = async(number, message) => {
     try {
-        await sendTextMessage(number, languageChooser(number).learnFromVideo)
-        await sendVideoFile(number, videos[1])
-        await sendTemplateMessage(number, languageChooser(number).startTemplate)
-        flowPathIndicator.set(number, "5")
+        await sendListMessage(number, languageChooser(number).selectMenu)
+        flowPathIndicator.set(number, "menu")
+
     } catch (err) {
         logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
         clearFlags(number)

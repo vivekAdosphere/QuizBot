@@ -13,14 +13,19 @@ module.exports = {
     askForDesignation: "Enter your designation",
     askForDistrictId: "Enter your district id",
 
+
+
     //inputmessage
     Yes: ["Yes", "yes", "1"],
     No: ["No", "no", "2"],
-    startTemplate: ["details_confirmation", "en"],
+    startTemplate: ["start_quiz", "en"],
     learnFromVideo: "Please refer the video below before attempting for the quiz",
+    confirmTemplate: ["details_confirmation", "en"],
+
+    selectMenu: "Please choose between this categories",
 
     //quiz questions
-    question1: "*Question 1:* Which one of the following river flows between Vindhyan and Satpura ranges?\n\n1. Narmada\n2. Mahanadi",
+    question1: "*Question 1:* Which one of the following river flows between Vindhyan and Satpura ranges?\n\n1. Narmada\n2. Mahanadi\n3. Sabarmati\n4. Ganga",
     //ans: 1. Narmada
     question2: "*Question 2:* The first country in the world to use postcards was the United States of America.\n\n1. Yes\n2. No",
     //ans : 2. Cuttack, No

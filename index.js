@@ -57,6 +57,9 @@ app.post("/webhook", (req, res) => {
                 console.log("From button handler")
                 handleButtonMessage(waId, value.button.text)
                 res.status(200).end();
+            } else if (value.type === "interactive") {
+                handleTextMessage(waId, value.interactive.list_reply.id)
+                res.status(200).end();
             } else {
                 res.status(200).end();
             }

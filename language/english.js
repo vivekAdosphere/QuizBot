@@ -22,6 +22,8 @@ module.exports = {
     learnFromVideo: "Please refer the video below before attempting for the quiz",
     confirmTemplate: ["details_confirmation", "en"],
 
+    selectMenu: "Please choose between this categories",
+
     //quiz questions
     question1: "*Question 1:* Which one of the following river flows between Vindhyan and Satpura ranges?\n\n1. Narmada\n2. Mahanadi\n3. Sabarmati\n4. Ganga",
     //ans: 1. Narmada

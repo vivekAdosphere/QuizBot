@@ -4,7 +4,7 @@ const { clearFlags } = require("../functionality/utilities");
 const { MapToLocal } = require("../functionality/mapToLocal");
 const languageChooser = require("../language/languageChooser");
 const { sendTextMessage, sendTemplateMessage } = require("../functionality/messageSender");
-const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler } = require("../controllers/messagingFunction");
+const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, menuHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler } = require("../controllers/messagingFunction");
 
 const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
 
@@ -17,6 +17,9 @@ exports.handleTextMessage = async(number, message) => {
                 case "1":
                     await sendTemplateMessage(number, languageChooser(number).confirmTemplate)
                     break
+                case "menu":
+                    menuHandler(number, message)
+                    break
                 case "2":
                     nameHandler(number, message)
                     break
@@ -27,7 +30,7 @@ exports.handleTextMessage = async(number, message) => {
                     districtIdHandler(number, message)
                     break
                 case "5":
-                    await sendTemplateMessage(number, languageChooser(number).startTemplate)
+                    sendTemplateMessage(number, languageChooser(number).startTemplate)
                     break
                 case "6":
                     question1Handler(number, message)

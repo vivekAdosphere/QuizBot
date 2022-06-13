@@ -101,32 +101,40 @@ exports.sendListMessage = async(number, message) => {
             "type": "interactive",
             "interactive": {
                 "type": "list",
-                "header": {
-                    "type": "text",
-                    "text": message
-                },
+                // "header": {
+                //     "type": "text",
+                //     "text": message
+                // },
                 "body": {
-                    "text": "You have two options"
+                    "text": "Please Select between this category options"
                 },
-                "footer": {
-                    "text": "Please select to proceed"
-                },
+                // "footer": {
+                //     "text": "Please choose one to proceed"
+                // },
                 "action": {
-                    "button": "Open profile options",
+                    "button": "Open Menu",
                     "sections": [{
                             "title": "Option 1",
                             "rows": [{
                                 "id": "id1",
-                                "title": "StakeHolder",
-                                "description": "StakeHolder can register startup"
+                                "title": "Module1",
+                                // "description": "You'll have to asnwer question related to GK"
                             }]
                         },
                         {
                             "title": "Option 2",
                             "rows": [{
                                 "id": "id2",
-                                "title": "ShareHolder",
-                                "description": "Share Holder can take share of a comapny"
+                                "title": "Module2",
+                                // "description": "You'll have to asnwer question related to Maths"
+                            }]
+                        },
+                        {
+                            "title": "Option 3",
+                            "rows": [{
+                                "id": "id3",
+                                "title": "Module3",
+                                // "description": "You'll have to asnwer question related to History"
                             }]
                         }
 
