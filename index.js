@@ -48,13 +48,12 @@ app.post("/webhook", (req, res) => {
         const messages = req.body.messages
         messages.forEach(async(value) => {
             const waId = value.from;
-            console.log(value.type)
 
             if (value.type === "text") {
                 handleTextMessage(waId, value.text.body)
                 res.status(200).end();
             } else if (value.type === "button") {
-                console.log("From button handler")
+                console.log(value.button.text)
                 handleButtonMessage(waId, value.button.text)
                 res.status(200).end();
             } else if (value.type === "interactive") {

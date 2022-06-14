@@ -14,15 +14,18 @@ module.exports = {
     askForDistrictId: "Enter your district id",
 
 
+    //open menu
+    openMenu: "Open Menu",
 
     //inputmessage
     Yes: ["Yes", "yes", "1"],
     No: ["No", "no", "2"],
     startTemplate: ["start_quiz", "en"],
     learnFromVideo: "Please refer the video below before attempting for the quiz",
+    languageTemplate: ["select_language", "en"],
     confirmTemplate: ["details_confirmation", "en"],
 
-    selectMenu: "Please choose between this categories",
+    selectMenu: "Please select between this category options",
 
     //quiz questions
     question1: "*Question 1:* Which one of the following river flows between Vindhyan and Satpura ranges?\n\n1. Narmada\n2. Mahanadi\n3. Sabarmati\n4. Ganga",
@@ -37,7 +40,7 @@ module.exports = {
     //ans: 2.Venus ,NO
 
     //thankYouMessage
-    thankYouMsg: "Thank you for taking the quiz",
+    thankYouMsg: "Thank you for taking the quiz,Your score is ",
 
     //fallbacks
     somethingWentWrong: "Oops! Something went wrong! Please reinitiate the process using 'hi' or 'hello'",

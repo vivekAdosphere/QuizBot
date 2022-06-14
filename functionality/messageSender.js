@@ -92,7 +92,7 @@ exports.sendDocumentFile = async(number, certificateId, filename) => {
     }
 }
 
-exports.sendListMessage = async(number, message) => {
+exports.sendListMessage = async(number, message, openMenu) => {
     try {
         const payload = {
 
@@ -106,13 +106,13 @@ exports.sendListMessage = async(number, message) => {
                 //     "text": message
                 // },
                 "body": {
-                    "text": "Please Select between this category options"
+                    "text": message
                 },
                 // "footer": {
                 //     "text": "Please choose one to proceed"
                 // },
                 "action": {
-                    "button": "Open Menu",
+                    "button": openMenu,
                     "sections": [{
                             "title": "Option 1",
                             "rows": [{

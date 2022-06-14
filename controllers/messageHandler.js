@@ -4,16 +4,19 @@ const { clearFlags } = require("../functionality/utilities");
 const { MapToLocal } = require("../functionality/mapToLocal");
 const languageChooser = require("../language/languageChooser");
 const { sendTextMessage, sendTemplateMessage } = require("../functionality/messageSender");
-const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, menuHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler } = require("../controllers/messagingFunction");
+const { introductionHandler, existingUserHandler, nameHandler, designationHandler, districtIdHandler, menuHandler, quizHandler, question1Handler, question2Handler, question3Handler, question4Handler, question5Handler, languageHandler } = require("../controllers/messagingFunction");
+const e = require("express");
 
 const flowPathIndicator = new MapToLocal(mapNames.flowPathIndicator);
+const selectedCommunicationLanguage = new MapToLocal(mapNames.selectedCommunicationLanguage);
 
 exports.handleTextMessage = async(number, message) => {
     try {
         if (languageChooser(number).initiateConversationMessages.includes(message)) {
-            introductionHandler(number)
+            languageHandler(number)
         } else if (flowPathIndicator.has(number)) {
             switch (flowPathIndicator.get(number)) {
+
                 case "1":
                     await sendTemplateMessage(number, languageChooser(number).confirmTemplate)
                     break
@@ -61,6 +64,7 @@ exports.handleTextMessage = async(number, message) => {
 exports.handleButtonMessage = async(number, buttonText) => {
     try {
         if (flowPathIndicator.has(number)) {
+
             if (flowPathIndicator.get(number) === "5") {
                 switch (buttonText) {
                     case "Start":
@@ -71,16 +75,13 @@ exports.handleButtonMessage = async(number, buttonText) => {
 
                 }
             } else if (flowPathIndicator.get(number) === "1") {
-                switch (buttonText) {
-                    case "Yes":
-                        existingUserHandler(number, buttonText)
-                        break
-                    case "No":
-                        existingUserHandler(number, buttonText)
-                        break
-                    default:
-                        sendTextMessage(number, languageChooser(number).somethingWentWrong)
-                }
+                existingUserHandler(number, buttonText)
+
+            } else if (flowPathIndicator.get(number) === "introduction") {
+
+                console.log("Your button is" + buttonText)
+                selectedCommunicationLanguage.set(number, buttonText)
+                introductionHandler(number, buttonText)
             }
         }
     } catch (err) {

@@ -24,11 +24,22 @@ let initDefaultValues = (number, index) => {
 }
 
 
-//this process starts when used initialize the conversation with messages like hi,hello or similar
-//if user sends hi then below function is called
-exports.introductionHandler = async(number) => {
+exports.languageHandler = async(number) => {
     try {
         clearFlags(number)
+        await sendTemplateMessage(number, languageChooser(number).languageTemplate)
+        flowPathIndicator.set(number, "introduction")
+    } catch (err) {
+        logger.error(`Error, ${languageChooser(number).somethingWentWrong}`);
+        clearFlags(number)
+    }
+}
+
+//this process starts when used initialize the conversation with messages like hi,hello or similar
+//if user sends hi then below function is called
+exports.introductionHandler = async(number, message) => {
+    try {
+
         await sendTextMessage(number, languageChooser(number).welcomeMessage)
         await sendTextMessage(number, languageChooser(number).existingUserInformation)
         await sendTemplateMessage(number, languageChooser(number).confirmTemplate)
@@ -44,11 +55,12 @@ exports.introductionHandler = async(number) => {
 // This method checks the users reply and set the path of flowpathindicator
 exports.existingUserHandler = async(number, message) => {
     try {
-        if (message === "No") {
+        if (message === "No" || message === "ના") {
             await sendTextMessage(number, languageChooser(number).askForName)
             flowPathIndicator.set(number, "2")
-        } else if (message === "Yes") {
-            await sendListMessage(number, languageChooser(number).selectMenu)
+        } else if (message === "Yes" || message === "હા") {
+            console.log(message)
+            await sendListMessage(number, languageChooser(number).selectMenu, languageChooser(number).openMenu)
             flowPathIndicator.set(number, "menu")
         } else {
             await sendTextMessage(languageChooser(number).invalidInput);
@@ -112,7 +124,7 @@ exports.designationHandler = async(number, message) => {
 // 4
 exports.districtIdHandler = async(number, message) => {
     try {
-        await sendListMessage(number, languageChooser(number).selectMenu)
+        await sendListMessage(number, languageChooser(number).selectMenu, languageChooser(number).openMenu)
         flowPathIndicator.set(number, "menu")
 
     } catch (err) {
@@ -236,7 +248,7 @@ exports.question5Handler = async(number, message) => {
             clearFlags(number)
         } else if (message === "2") {
             userDataFlagHandler(number, "score", userData.get(number).score + 1)
-            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, your score is ${userData.get(number).score}/5`)
+            await sendTextMessage(number, `${languageChooser(number).thankYouMsg}, ${userData.get(number).score}/5`)
             await sendImageFile(number, images[1])
             flowPathIndicator.set(number, "11")
             clearFlags(number)
